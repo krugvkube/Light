@@ -1,0 +1,76 @@
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+    On Error GoTo ErrorHandler
+    
+    'check if TurnMode was turn on
+    If Not TurnMode Then Exit Sub
+    
+    ' Check that only one cell was chosen
+    If Target.Count > 1 Then Exit Sub
+    
+    ' Check the cell color
+    Dim isGreen As Boolean
+    isGreen = (Target.Interior.Color = RGB(192, 233, 192)) And (Target.Interior.ColorIndex <> xlNone)
+    
+    ' if the cell is green — all cells in the row till AL to white (through the function)
+    If isGreen Then
+        ResetGreenCellsToWhite Target.EntireRow
+        Exit Sub
+    End If
+    
+    ' if the cell is white — all cells in the row till AL to green (through the function)
+    If IsWhite(Target) Then
+        ColorWhiteCellsToGreen Target.EntireRow
+    End If
+    
+    Exit Sub
+    
+ErrorHandler:
+    MsgBox "Error", vbExclamation
+End Sub
+
+' Checkibg function of white
+Private Function IsWhite(cell As Range) As Boolean
+    On Error GoTo ErrorHandler
+    
+    ' Cell checking of being white (RGB 255,255,255) or has no color
+    If cell.Interior.Color = RGB(255, 255, 255) Or cell.Interior.ColorIndex = xlNone Then
+        IsWhite = True
+    Else
+        IsWhite = False
+    End If
+    
+    Exit Function
+    
+ErrorHandler:
+    IsWhite = False
+End Function
+
+' Painting all white cell in green (till the column AL)
+Private Sub ColorWhiteCellsToGreen(rowRange As Range)
+    Dim cell As Range
+    Dim lastCol As Integer
+    lastCol = 38 ' Column AL
+    
+    For Each cell In rowRange.Cells
+        If cell.Column > lastCol Then Exit For
+        
+        If IsWhite(cell) Then
+            cell.Interior.Color = RGB(192, 233, 192)
+        End If
+    Next cell
+End Sub
+
+' Green to white (till the column AL)
+Private Sub ResetGreenCellsToWhite(rowRange As Range)
+    Dim cell As Range
+    Dim lastCol As Integer
+    lastCol = 38 ' Column AL
+    
+    For Each cell In rowRange.Cells
+        If cell.Column > lastCol Then Exit For
+        
+        If cell.Interior.Color = RGB(192, 233, 192) Then
+            cell.Interior.Color = RGB(255, 255, 255)
+        End If
+    Next cell
+End Sub

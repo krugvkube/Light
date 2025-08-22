@@ -1,0 +1,7 @@
+Sub DistantTrigger()
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = Application.ActiveWorkbook
+
+    ' Procedure naming
+    Application.Run "'" & targetWorkbook.Name & "'!LightUp"
+End Sub

@@ -1,0 +1,6 @@
+Public TurnMode As Boolean ' Global variable, set (0)
+
+Sub LightUp()
+    TurnMode = Not TurnMode ' Inverting
+    MsgBox "Light up: " & IIf(TurnMode, "Turn on", "Turn off"), vbInformation
+End Sub

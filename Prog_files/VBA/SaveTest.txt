@@ -1,0 +1,31 @@
+Sub CopyFileAndRunPython()
+    On Error GoTo ErrorHandler
+    
+    Dim destinationFolder As String
+    Dim pythonScriptPath As String
+    Dim sourcePath As String
+    Dim destinationPath As String
+    Dim shellCommand As String
+    
+    ' Destinations
+    destinationFolder = "&&&&/Prog_files/buffer/"
+    pythonScriptPath = "&&&&/Prog_files/processing/Excel_processing.py" 
+    
+    ' Destination of current file
+    sourcePath = ActiveWorkbook.FullName
+    
+    ' Destination of buffer.xlsm
+    destinationPath = destinationFolder & "buffer.xlsm"
+    
+    ' Copy file
+    FileCopy sourcePath, destinationPath
+    
+    ' Launch Python script
+    shellCommand = "python3 " & Chr(34) & pythonScriptPath & Chr(34)
+    Shell shellCommand, vbHide
+    
+    Exit Sub
+    
+ErrorHandler:
+    MsgBox "Error: " & Err.Description
+End Sub
