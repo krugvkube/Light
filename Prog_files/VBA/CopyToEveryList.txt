@@ -11,7 +11,7 @@ Sub AddCodeToAllSheets()
     Dim fileNum As Integer
     
     ' Path to LightUp
-    filePath = "/home/anton/Documents/train/VBA/Light/Prog_files/VBA/LightUpMain.txt"
+    filePath = "&&&&/Prog_files/VBA/LightUpMain.txt"
     
     ' Main file code reading 
     fileNum = FreeFile()
@@ -22,7 +22,7 @@ Sub AddCodeToAllSheets()
     ' Reading of TurnMode.txt file
 
     ' Path to TurnMode
-    filePath = "/home/anton/Documents/train/VBA/Light/Prog_files/VBA/TurnMode.txt"
+    filePath = "&&&&/Prog_files/VBA/TurnMode.txt"
     fileNum = FreeFile()
     Open filePath For Input As #fileNum
     turnModeText = Input$(LOF(fileNum), fileNum)
