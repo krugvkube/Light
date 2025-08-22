@@ -1,1 +1,60 @@
+Sub AddCodeToAllSheets()
+    On Error GoTo ErrorHandler
+    
+    Dim wb As Workbook
+    Dim ws As Worksheet
+    Dim vbComp As VBComponent
+    Dim codeMod As CodeModule
+    Dim codeText As String
+    Dim turnModeText As String
+    Dim filePath As String
+    Dim fileNum As Integer
+    
+    ' Path to LightUp
+    filePath = "/home/anton/Documents/train/VBA/Light/Prog_files/VBA/LightUpMain.txt"
+    
+    ' Main file code reading 
+    fileNum = FreeFile()
+    Open filePath For Input As #fileNum
+    codeText = Input$(LOF(fileNum), fileNum)
+    Close #fileNum
+    
+    ' Reading of TurnMode.txt file
 
+    ' Path to TurnMode
+    filePath = "/home/anton/Documents/train/VBA/Light/Prog_files/VBA/TurnMode.txt"
+    fileNum = FreeFile()
+    Open filePath For Input As #fileNum
+    turnModeText = Input$(LOF(fileNum), fileNum)
+    Close #fileNum
+    
+    Set wb = ActiveWorkbook
+    
+    ' Adding code to every list
+    For Each ws In wb.Worksheets
+        Set vbComp = wb.VBProject.VBComponents(ws.CodeName)
+        Set codeMod = vbComp.CodeModule
+        
+        ' Check the list code is empty
+        If codeMod.CountOfLines > 1 Then
+            With codeMod
+                codeMod.DeleteLine 1, codeMod.CountOfLines
+            End With
+        End If
+        
+        ' Adding code from fail
+        codeMod.AddFromString codeText
+    Next ws
+    
+    ' create new module and add TurnMode code
+    Set vbComp = wb.VBProject.VBComponents.Add(vbext_ct_StdModule)
+    vbComp.Name = "TurnModeModule"
+    Set codeMod = vbComp.CodeModule
+    codeMod.AddFromString turnModeText
+    
+    MsgBox "Code added to all sheets and TurnMode module created", vbInformation
+    Exit Sub
+    
+ErrorHandler:
+    MsgBox "Erroe: " & Err.Description, vbExclamation
+End Sub
