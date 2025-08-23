@@ -45,8 +45,8 @@ def process_file2():
         # Обрабатываем строки
         modified_lines = []
         for line in lines:
-            if 'filePath = ' in line:
-                # Заменяем только в строках с filePath =
+            if 'destinationFolder = ' in line or 'pythonScriptPath = ' in line:
+                # Заменяем только в нужных строках
                 modified_line = line.replace('&&&&', file_path_Light)
                 modified_lines.append(modified_line)
             else:
